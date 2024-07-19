@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Table, Paper, Container, Grid, ActionIcon } from "@mantine/core";
+import {
+  Table,
+  Paper,
+  Container,
+  Grid,
+  ActionIcon,
+  Button,
+} from "@mantine/core";
 import { MdDelete } from "react-icons/md";
 import Swal from "sweetalert2";
 import axios from "axios";
 import api from "../api";
+import { useNavigate } from "react-router-dom";
 
 const rupiah = (number) => {
   return new Intl.NumberFormat("id-ID", {
@@ -15,9 +23,9 @@ const rupiah = (number) => {
 const Order = () => {
   const [orders, setOrders] = useState([]);
   const [totalAll, setTotalAll] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(orders);
     const fetchOrders = async () => {
       try {
         const response = await api.get("/orderWithItem");
@@ -64,6 +72,18 @@ const Order = () => {
     }
   };
 
+  const handleCheckout = async () => {
+    try {
+      const orderIds = orders.map((order) => order.id);
+      await api.post("/invoices", { order_ids: orderIds });
+      Swal.fire("Success!", "Checkout completed successfully.", "success");
+      navigate("/invoices");
+    } catch (error) {
+      console.error("Error during checkout:", error);
+      Swal.fire("Error!", "There was an error during checkout.", "error");
+    }
+  };
+
   return (
     <Container size="sm" padding="md" mt="lg">
       <Paper shadow="xl" padding="md" radius="md" withBorder>
@@ -106,7 +126,14 @@ const Order = () => {
                   Total All
                 </td>
                 <td style={{ textAlign: "center" }}>{rupiah(totalAll)}</td>
-                <td></td>
+              </tr>
+              <tr>
+                <td colSpan={4} style={{ textAlign: "right" }}></td>
+                <td style={{ textAlign: "center" }}>
+                  <Button onClick={handleCheckout} fullWidth mt="md" m={"lg"}>
+                    Checkout
+                  </Button>
+                </td>
               </tr>
             </tbody>
           </Table>

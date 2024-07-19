@@ -5,7 +5,7 @@ import {
   IconHome,
   IconBox,
   IconShoppingCart,
-  IconUsers,
+  IconReceipt,
   IconSettings,
 } from "@tabler/icons-react";
 import { Link, Outlet } from "react-router-dom";
@@ -34,9 +34,9 @@ const Navbar = () => {
                 <IconShoppingCart size={20} />
                 Orders
               </Button>
-              <Button variant="subtle">
-                <IconUsers size={20} />
-                Users
+              <Button variant="subtle" component={Link} to={"/invoices"}>
+                <IconReceipt size={20} />
+                Invoices
               </Button>
               <Button variant="subtle">
                 <IconSettings size={20} />
@@ -46,7 +46,7 @@ const Navbar = () => {
           </Group>
         </Container>
       </Box>
-      <Outlet></Outlet>
+      <Outlet />
     </>
   );
 };

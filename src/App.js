@@ -7,6 +7,8 @@ import Navbar from "./components/Navbar";
 import Add from "./pages/Add";
 import ItemDetail from "./pages/ItemDetail";
 import Order from "./pages/Order";
+import Invoice from "./pages/Invoice";
+import InvoiceDetail from "./pages/InvoiceDetail";
 const App = () => {
   const router = createBrowserRouter([
     {
@@ -32,6 +34,14 @@ const App = () => {
         {
           path: "order",
           element: <Order />,
+        },
+        {
+          path: "invoices",
+          element: <Invoice />,
+        },
+        {
+          path: "invoices/:id",
+          element: <InvoiceDetail />,
         },
       ],
     },
